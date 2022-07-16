@@ -4,6 +4,32 @@ import axios from 'axios';
 
 const todoDataUrl = "http://localhost:3100/todos";
 
+const TodoTitle = ({ title, as }) => {
+  if (as === 'h1') return <h1>{title}</h1>;
+  if (as === 'h2') return <h2>{title}</h2>;
+  return <p>{title}</p>;
+};
+
+const TodoItem = ({ todo }) => {
+  return (
+    <li>
+      {todo.content}
+      <button>{todo.done ? "to Yet" : "to Done"}</button>
+      <button>Delete</button>
+    </li>
+  );
+};
+
+const TodoList = ({ todoList }) => {
+  return (
+    <ul>
+      {todoList.map((todo) => (
+        <TodoItem todo={todo} key={todo.id} />
+      ))}
+    </ul>
+  );
+};
+
 function App() {
   const [todoList, setTodoList] = useState([]);
 
@@ -31,36 +57,16 @@ function App() {
 
   return (
     <>
-      <h1>ToDo List</h1>
+      <TodoTitle title="ToDo List" as="h1" />
       <textarea />
 
       <button>add</button>
 
-      <h2>Yet</h2>
-      <ul>
-        {inCompletedList.map(todo => (
-          <li key={todo.id}>
-            {todo.content}
+      <TodoTitle title="Yet" as="h2" />
+      <TodoList todoList={inCompletedList} />
 
-            <button>{todo.done ? "to Yet" : "to Done"}</button>
-
-            <button>Delete</button>
-          </li>
-        ))}
-      </ul>
-
-      <h2>Done</h2>
-      <ul>
-        {completedList.map(todo => (
-          <li key={todo.id}>
-            {todo.content}
-
-            <button>{todo.done ? "to Yet" : "to Done"}</button>
-
-            <button>Delete</button>
-          </li>
-        ))}
-      </ul>
+      <TodoTitle title="Done" as="h2" />
+      <TodoList todoList={completedList} />
     </>
   );
 }
