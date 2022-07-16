@@ -8,7 +8,7 @@ export const useTodo = () => {
   useEffect(() => {
     // getAllTodosData() を実行してモックサーバーからTodoデータを取得
     todoData.getAllTodosData().then((todo) => {
-      setTodoList([...todo].severse());
+      setTodoList([...todo].reverse());
     });
   }, []);
 
@@ -19,7 +19,7 @@ export const useTodo = () => {
     // done を反転させる
     const newTodoItem = { ...todoItem, done: !done };
 
-    todoData.uodateTodoData(id, newTodoItem).then((updatedTodo) => {
+    todoData.updateTodoData(id, newTodoItem).then((updatedTodo) => {
       const newTodoList = todoList.map((item) =>
         // id が異なる場合は todoList から取り出した item をそのまま返す
         // 一致する場合は done を反転させた updatedTodo を返して新しい配列 newTodoList を作成

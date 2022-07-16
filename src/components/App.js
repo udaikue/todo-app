@@ -1,5 +1,5 @@
 import './App.css';
-import { useTodo } from '../hooks/useTodos';
+import { useTodo } from '../hooks/useTodo';
 
 const TodoTitle = ({ title, as }) => {
   if (as === 'h1') return <h1>{title}</h1>;

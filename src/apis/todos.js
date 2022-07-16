@@ -13,7 +13,7 @@ export const addTodoData = async (todo) => {
 };
 
 export const deleteTodoData = async (id) => {
-  await axios.delete(`${todoDataUel}/${id}`);
+  await axios.delete(`${todoDataUrl}/${id}`);
   return id;
 };
 
