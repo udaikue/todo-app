@@ -2,32 +2,47 @@ import React, { useRef } from 'react';
 import { useTodo } from '../hooks/useTodo';
 import "./App.css";
 
+// TodoTitle コンポーネント
 const TodoTitle = ({ title, as }) => {
   if (as === 'h1') return <h1>{title}</h1>;
   if (as === 'h2') return <h2>{title}</h2>;
   return <p>{title}</p>;
 };
 
-const TodoItem = ({ todo }) => {
+// TodoItem コンポーネント
+const TodoItem = ({ todo, toggleTodoListItemStatus, deleteTodoListItem }) => {
+  const handleToggleTodoListItemStatus = () => toggleTodoListItemStatus(todo.id, todo.done);
+
+  const handleDeleteTodoListItem = () => deleteTodoListItem(todo.id);
+
   return (
     <li>
       {todo.content}
-      <button>{todo.done ? "to Yet" : "to Done"}</button>
-      <button>Delete</button>
+      <button onClick={handleToggleTodoListItemStatus}>
+        {todo.done ? "to Yet" : "to Done"}
+      </button>
+      <button onClick={handleDeleteTodoListItem}>Delete</button>
     </li>
   );
 };
 
-const TodoList = ({ todoList }) => {
+// TodoList コンポーネント
+const TodoList = ({ todoList, toggleTodoListItemStatus, deleteTodoListItem }) => {
   return (
     <ul>
       {todoList.map((todo) => (
-        <TodoItem todo={todo} key={todo.id} />
+        <TodoItem
+          todo={todo}
+          key={todo.id}
+          toggleTodoListItemStatus={toggleTodoListItemStatus}
+          deleteTodoListItem={deleteTodoListItem}
+        />
       ))}
     </ul>
   );
 };
 
+// TodoAdd コンポーネント
 const TodoAdd = ({ inputEl, handleAddTodoListItem }) => {
   return (
     <>
@@ -41,13 +56,14 @@ function App() {
   const {
     todoList,
     addTodoListItem,
+    toggleTodoListItemStatus,
+    deleteTodoListItem,
   } = useTodo();
 
   const inputEl = useRef(null);
 
   const handleAddTodoListItem = () => {
     if (inputEl.current.value === '') return;
-
     addTodoListItem(inputEl.current.value);
     inputEl.current.value = '';
   };
@@ -69,13 +85,24 @@ function App() {
   return (
     <>
       <TodoTitle title="ToDo List" as="h1" />
-      <TodoAdd inputEl={inputEl} handleAddTodoListItem={handleAddTodoListItem} />
+      <TodoAdd
+        inputEl={inputEl}
+        handleAddTodoListItem={handleAddTodoListItem}
+      />
 
       <TodoTitle title="Yet" as="h2" />
-      <TodoList todoList={inCompletedList} />
+      <TodoList
+        todoList={inCompletedList}
+        toggleTodoListItemStatus={toggleTodoListItemStatus}
+        deleteTodoListItem={deleteTodoListItem}
+      />
 
       <TodoTitle title="Done" as="h2" />
-      <TodoList todoList={completedList} />
+      <TodoList
+        todoList={completedList}
+        toggleTodoListItemStatus={toggleTodoListItemStatus}
+        deleteTodoListItem={deleteTodoListItem}
+      />
     </>
   );
 }
