@@ -28,6 +28,15 @@ const TodoList = ({ todoList }) => {
   );
 };
 
+const TodoAdd = ({ inputEl, handleAddTodoListItem }) => {
+  return (
+    <>
+      <textarea ref={inputEl} />
+      <button onClick={handleAddTodoListItem}>add</button>
+    </>
+  );
+};
+
 function App() {
   const {
     todoList,
@@ -60,9 +69,7 @@ function App() {
   return (
     <>
       <TodoTitle title="ToDo List" as="h1" />
-      <textarea ref={inputEl} />
-
-      <button onClick={handleAddTodoListItem}>add</button>
+      <TodoAdd inputEl={inputEl} handleAddTodoListItem={handleAddTodoListItem} />
 
       <TodoTitle title="Yet" as="h2" />
       <TodoList todoList={inCompletedList} />
