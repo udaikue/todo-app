@@ -8,11 +8,21 @@
     {
       "id": 2,
       "content": "トイレ掃除",
-      "done": false
+      "done": true
     },
     {
       "id": 3,
       "content": "郵便出す",
+      "done": false
+    },
+    {
+      "content": "お金おろす",
+      "id": "01G82GN1YNRZKWCCXQ1S33XFZ8",
+      "done": true
+    },
+    {
+      "content": "ご飯炊く",
+      "id": "01G8371M0PSYCQSC0TPPV3MM3R",
       "done": false
     }
   ]

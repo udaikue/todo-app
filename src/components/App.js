@@ -1,66 +1,60 @@
-import React, { useState, useEffect } from 'react';
-import './App.css';
-import axios from 'axios';
+import React, { useRef } from 'react';
+import { useTodo } from '../hooks/useTodo';
 
-const todoDataUrl = "http://localhost:3100/todos";
+import { TodoTitle } from './TodoTitle';
+import { TodoAdd } from './TodoAdd';
+import { TodoList } from './TodoList';
+
+import "./App.css";
 
 function App() {
-  const [todoList, setTodoList] = useState([]);
+  const {
+    todoList,
+    addTodoListItem,
+    toggleTodoListItemStatus,
+    deleteTodoListItem,
+  } = useTodo();
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const response = await axios.get(todoDataUrl);
-      setTodoList(response.data);
-    };
-    fetchData();
-  }, []);
+  const inputEl = useRef(null);
 
-  console.log("ToDoリスト:", todoList);
+  const handleAddTodoListItem = () => {
+    if (inputEl.current.value === '') return;
+    addTodoListItem(inputEl.current.value);
+    inputEl.current.value = '';
+  };
 
   const inCompletedList = todoList.filter((todo) => {
     return !todo.done;
   });
 
-  console.log("未完了:", inCompletedList);
-
   const completedList = todoList.filter((todo) => {
     return todo.done;
   });
 
-  console.log("完了:", completedList);
-
   return (
     <>
-      <h1>ToDo List</h1>
-      <textarea />
+      <TodoTitle title="ToDo List" as="h1" />
+      <TodoAdd
+        buttonText='add'
+        inputEl={inputEl}
+        handleAddTodoListItem={handleAddTodoListItem}
+      />
 
-      <button>add</button>
+      <TodoList
+        todoList={inCompletedList}
+        toggleTodoListItemStatus={toggleTodoListItemStatus}
+        deleteTodoListItem={deleteTodoListItem}
+        title='Yet'
+        as='h2'
+      />
 
-      <h2>Yet</h2>
-      <ul>
-        {inCompletedList.map(todo => (
-          <li key={todo.id}>
-            {todo.content}
-
-            <button>{todo.done ? "to Yet" : "to Done"}</button>
-
-            <button>Delete</button>
-          </li>
-        ))}
-      </ul>
-
-      <h2>Done</h2>
-      <ul>
-        {completedList.map(todo => (
-          <li key={todo.id}>
-            {todo.content}
-
-            <button>{todo.done ? "to Yet" : "to Done"}</button>
-
-            <button>Delete</button>
-          </li>
-        ))}
-      </ul>
+      <TodoList
+        todoList={completedList}
+        toggleTodoListItemStatus={toggleTodoListItemStatus}
+        deleteTodoListItem={deleteTodoListItem}
+        title='Done'
+        as='h2'
+      />
     </>
   );
 }
